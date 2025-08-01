@@ -1,0 +1,245 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_mermaid %>
+  <%= stylesheet_link_tag 'workflow_viz', plugin: 'redmine_workflow_viz' %>
+<% end %>
+
+<div class="contextual">
+  <%= export_buttons(@project, @selected_tracker) if @selected_tracker %>
+</div>
+
+<h2>
+  <%= l(:label_workflow_visualization) %>
+  <% if @selected_tracker %>
+    - <%= @selected_tracker.name %>
+  <% end %>
+</h2>
+
+<%= render_workflow_legend if show_status_colors? %>
+
+<div class="workflow-viz-controls">
+  <%= form_tag project_workflow_viz_index_path(@project), method: :get, local: true, class: 'form-inline' do %>
+    <div class="form-group">
+      <%= label_tag :tracker_id, l(:field_tracker), class: 'control-label' %>
+      <%= select_tag :tracker_id, 
+                     tracker_select_options(@trackers, @selected_tracker),
+                     { 
+                       class: 'form-control',
+                       onchange: 'this.form.submit();',
+                       include_blank: false
+                     } %>
+    </div>
+    
+    <div class="form-group ml-3">
+      <%= label_tag :diagram_type, l(:label_diagram_type), class: 'control-label' %>
+      <%= select_tag :diagram_type,
+                     options_for_select(diagram_type_options, params[:diagram_type] || default_diagram_type),
+                     { 
+                       class: 'form-control',
+                       id: 'diagram-type-select'
+                     } %>
+    </div>
+    
+    <div class="form-group ml-3">
+      <%= label_tag :theme, l(:label_theme), class: 'control-label' %>
+      <%= select_tag :theme,
+                     options_for_select(mermaid_theme_options, params[:theme] || 'default'),
+                     { 
+                       class: 'form-control',
+                       id: 'theme-select'
+                     } %>
+    </div>
+  <% end %>
+</div>
+
+<% if @selected_tracker && @mermaid_diagram.present? %>
+  <div class="workflow-diagram-section">
+    <h3><%= l(:label_workflow_diagram) %></h3>
+    
+    <div class="diagram-controls">
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="zoom-in">
+        <i class="fa fa-search-plus"></i> <%= l(:button_zoom_in) %>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="zoom-out">
+        <i class="fa fa-search-minus"></i> <%= l(:button_zoom_out) %>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="reset-zoom">
+        <i class="fa fa-refresh"></i> <%= l(:button_reset_zoom) %>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-info" id="fullscreen-toggle">
+        <i class="fa fa-expand"></i> <%= l(:button_fullscreen) %>
+      </button>
+    </div>
+    
+    <%= mermaid_diagram_container('workflow-diagram', @mermaid_diagram, 
+                                  class: 'workflow-diagram-main',
+                                  style: 'min-height: 400px; border: 1px solid #ddd; border-radius: 4px;') %>
+  </div>
+
+  <div class="workflow-details-section mt-4">
+    <h3><%= l(:label_workflow_details) %></h3>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <h4><%= l(:label_statuses) %></h4>
+        <div class="status-list">
+          <% @workflow_data[:statuses].each do |status| %>
+            <div class="status-item">
+              <%= status_badge(status) %>
+              <span class="status-info">
+                ID: <%= status[:id] %>
+                <% if status[:is_closed] %>
+                  <span class="text-muted">(<%= l(:label_closed) %>)</span>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <h4><%= l(:label_transitions) %></h4>
+        <div class="transitions-list">
+          <% @workflow_data[:transitions].each do |transition| %>
+            <div class="transition-item">
+              <i class="fa fa-arrow-right text-primary"></i>
+              <strong><%= transition[:from_name] %></strong>
+              →
+              <strong><%= transition[:to_name] %></strong>
+              <% if transition[:role] %>
+                <span class="text-muted">(<%= transition[:role] %>)</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% elsif @selected_tracker %>
+  <div class="alert alert-info">
+    <%= l(:notice_no_workflow_defined, tracker: @selected_tracker.name) %>
+  </div>
+<% else %>
+  <div class="alert alert-warning">
+    <%= l(:notice_no_trackers_available) %>
+  </div>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Mermaid 초기화
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: '<%= params[:theme] || "default" %>',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis'
+    },
+    securityLevel: 'loose'
+  });
+
+  // 다이어그램 타입 변경 처리
+  const diagramTypeSelect = document.getElementById('diagram-type-select');
+  const themeSelect = document.getElementById('theme-select');
+  
+  if (diagramTypeSelect) {
+    diagramTypeSelect.addEventListener('change', function() {
+      updateDiagram();
+    });
+  }
+  
+  if (themeSelect) {
+    themeSelect.addEventListener('change', function() {
+      mermaid.initialize({
+        theme: this.value,
+        startOnLoad: true
+      });
+      updateDiagram();
+    });
+  }
+
+  // 줌 기능
+  let currentZoom = 1;
+  const diagramContainer = document.querySelector('.workflow-diagram-main');
+  
+  if (diagramContainer) {
+    document.getElementById('zoom-in')?.addEventListener('click', function() {
+      currentZoom += 0.1;
+      diagramContainer.style.transform = `scale(${currentZoom})`;
+    });
+    
+    document.getElementById('zoom-out')?.addEventListener('click', function() {
+      currentZoom = Math.max(0.1, currentZoom - 0.1);
+      diagramContainer.style.transform = `scale(${currentZoom})`;
+    });
+    
+    document.getElementById('reset-zoom')?.addEventListener('click', function() {
+      currentZoom = 1;
+      diagramContainer.style.transform = 'scale(1)';
+    });
+    
+    // 전체화면 토글
+    document.getElementById('fullscreen-toggle')?.addEventListener('click', function() {
+      if (diagramContainer.requestFullscreen) {
+        diagramContainer.requestFullscreen();
+      }
+    });
+  }
+
+  // PNG 내보내기
+  document.querySelectorAll('.export-png').forEach(function(button) {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      exportToPNG();
+    });
+  });
+
+  function updateDiagram() {
+    const trackerId = '<%= @selected_tracker&.id %>';
+    const diagramType = diagramTypeSelect?.value || 'flowchart';
+    
+    if (trackerId) {
+      fetch(`<%= project_workflow_viz_index_path(@project) %>/tracker_workflow?tracker_id=${trackerId}`, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        const diagramElement = document.getElementById('workflow-diagram');
+        if (diagramElement && data.mermaid) {
+          diagramElement.innerHTML = data.mermaid;
+          mermaid.init(undefined, diagramElement);
+        }
+      })
+      .catch(error => {
+        console.error('Error updating diagram:', error);
+      });
+    }
+  }
+
+  function exportToPNG() {
+    const svg = document.querySelector('#workflow-diagram svg');
+    if (!svg) return;
+    
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const data = new XMLSerializer().serializeToString(svg);
+    const img = new Image();
+    
+    img.onload = function() {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      
+      const link = document.createElement('a');
+      link.download = 'workflow-<%= @selected_tracker&.name || "diagram" %>.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    };
+    
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(data)));
+  }
+});
+</script>

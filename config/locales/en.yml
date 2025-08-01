@@ -1,0 +1,77 @@
+en:
+  # 메뉴 및 제목
+  label_workflow_visualization: "Workflow Visualization"
+  label_workflow_visualization_admin: "Workflow Visualization (Admin)"
+  label_workflow_diagram: "Workflow Diagram"
+  label_workflow_details: "Workflow Details"
+  label_global_workflow_for: "Global Workflow for %{tracker}"
+  
+  # 필드 라벨
+  field_tracker: "Tracker"
+  label_diagram_type: "Diagram Type"
+  label_theme: "Theme"
+  label_view_mode: "View Mode"
+  label_statuses: "Statuses"
+  label_transitions: "Transitions"
+  label_transitions_with_roles: "Transitions with Roles"
+  label_from_status: "From Status"
+  label_to_status: "To Status"
+  label_roles: "Roles"
+  label_role_count: "Role Count"
+  label_closed: "Closed"
+  
+  # 버튼
+  button_zoom_in: "Zoom In"
+  button_zoom_out: "Zoom Out"
+  button_reset_zoom: "Reset Zoom"
+  button_fullscreen: "Fullscreen"
+  button_bulk_export: "Bulk Export"
+  button_tracker_overview: "Tracker Overview"
+  button_hide_overview: "Hide Overview"
+  button_export_all_workflows: "Export All Workflows"
+  
+  # 다이어그램 타입
+  label_flowchart: "Flowchart"
+  label_state_diagram: "State Diagram"
+  
+  # 뷰 모드
+  label_global_view: "Global View"
+  label_detailed_view: "Detailed View"
+  
+  # 테마
+  label_theme_default: "Default"
+  label_theme_dark: "Dark"
+  label_theme_forest: "Forest"
+  label_theme_neutral: "Neutral"
+  
+  # 통계
+  label_workflow_statistics: "Workflow Statistics"
+  label_tracker_overview: "Tracker Overview"
+  label_admin_tools: "Admin Tools"
+  
+  # 알림 메시지
+  notice_no_workflow_defined: "No workflow is defined for tracker '%{tracker}'"
+  notice_no_trackers_available: "No trackers are available in this project"
+  
+  # 설정
+  label_workflow_viz_settings: "Workflow Visualization Settings"
+  label_default_diagram_type: "Default Diagram Type"
+  label_show_status_colors: "Show Status Colors"
+  label_enable_export: "Enable Export Functions"
+  label_mermaid_theme: "Mermaid Theme"
+  label_max_diagram_width: "Maximum Diagram Width"
+  label_cache_diagrams: "Cache Diagrams"
+  label_show_role_labels: "Show Role Labels on Transitions"
+  label_enable_fullscreen: "Enable Fullscreen Mode"
+  label_configure_workflow: "Configure Workflow"
+  label_create_tracker: "Create Tracker"
+  
+  # 설정 도움말
+  text_default_diagram_type_help: "Select the default diagram type for workflow visualization"
+  text_show_status_colors_help: "Display different colors for different status types"
+  text_enable_export_help: "Allow users to export diagrams in various formats"
+  text_mermaid_theme_help: "Choose the default theme for Mermaid diagrams"
+  text_max_diagram_width_help: "Maximum width for diagrams in pixels"
+  text_cache_diagrams_help: "Cache generated diagrams to improve performance"
+  text_show_role_labels_help: "Show role names on transition arrows"
+  text_enable_fullscreen_help: "Allow fullscreen viewing of diagrams"

@@ -1,0 +1,77 @@
+ko:
+  # 메뉴 및 제목
+  label_workflow_visualization: "워크플로우 시각화"
+  label_workflow_visualization_admin: "워크플로우 시각화 (관리자)"
+  label_workflow_diagram: "워크플로우 다이어그램"
+  label_workflow_details: "워크플로우 상세정보"
+  label_global_workflow_for: "%{tracker}의 전역 워크플로우"
+  
+  # 필드 라벨
+  field_tracker: "트래커"
+  label_diagram_type: "다이어그램 유형"
+  label_theme: "테마"
+  label_view_mode: "보기 모드"
+  label_statuses: "상태"
+  label_transitions: "전환"
+  label_transitions_with_roles: "역할별 전환"
+  label_from_status: "시작 상태"
+  label_to_status: "종료 상태"
+  label_roles: "역할"
+  label_role_count: "역할 수"
+  label_closed: "완료됨"
+  
+  # 버튼
+  button_zoom_in: "확대"
+  button_zoom_out: "축소"
+  button_reset_zoom: "확대/축소 초기화"
+  button_fullscreen: "전체화면"
+  button_bulk_export: "일괄 내보내기"
+  button_tracker_overview: "트래커 개요"
+  button_hide_overview: "개요 숨기기"
+  button_export_all_workflows: "모든 워크플로우 내보내기"
+  
+  # 다이어그램 타입
+  label_flowchart: "플로우차트"
+  label_state_diagram: "상태 다이어그램"
+  
+  # 뷰 모드
+  label_global_view: "전역 보기"
+  label_detailed_view: "상세 보기"
+  
+  # 테마
+  label_theme_default: "기본"
+  label_theme_dark: "다크"
+  label_theme_forest: "포레스트"
+  label_theme_neutral: "중성"
+  
+  # 통계
+  label_workflow_statistics: "워크플로우 통계"
+  label_tracker_overview: "트래커 개요"
+  label_admin_tools: "관리자 도구"
+  
+  # 알림 메시지
+  notice_no_workflow_defined: "트래커 '%{tracker}'에 대한 워크플로우가 정의되지 않았습니다"
+  notice_no_trackers_available: "이 프로젝트에서 사용 가능한 트래커가 없습니다"
+  
+  # 설정
+  label_workflow_viz_settings: "워크플로우 시각화 설정"
+  label_default_diagram_type: "기본 다이어그램 유형"
+  label_show_status_colors: "상태 색상 표시"
+  label_enable_export: "내보내기 기능 활성화"
+  label_mermaid_theme: "Mermaid 테마"
+  label_max_diagram_width: "최대 다이어그램 너비"
+  label_cache_diagrams: "다이어그램 캐시"
+  label_show_role_labels: "전환에 역할 라벨 표시"
+  label_enable_fullscreen: "전체화면 모드 활성화"
+  label_configure_workflow: "워크플로우 설정"
+  label_create_tracker: "트래커 생성"
+  
+  # 설정 도움말
+  text_default_diagram_type_help: "워크플로우 시각화의 기본 다이어그램 유형을 선택하세요"
+  text_show_status_colors_help: "다양한 상태 유형에 대해 서로 다른 색상을 표시합니다"
+  text_enable_export_help: "사용자가 다양한 형식으로 다이어그램을 내보낼 수 있도록 허용합니다"
+  text_mermaid_theme_help: "Mermaid 다이어그램의 기본 테마를 선택하세요"
+  text_max_diagram_width_help: "다이어그램의 최대 너비를 픽셀 단위로 설정합니다"
+  text_cache_diagrams_help: "성능 향상을 위해 생성된 다이어그램을 캐시합니다"
+  text_show_role_labels_help: "전환 화살표에 역할 이름을 표시합니다"
+  text_enable_fullscreen_help: "다이어그램의 전체화면 보기를 허용합니다"

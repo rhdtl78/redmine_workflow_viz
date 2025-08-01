@@ -1,0 +1,262 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_mermaid %>
+  <%= stylesheet_link_tag 'workflow_viz', plugin: 'redmine_workflow_viz' %>
+<% end %>
+
+<div class="contextual">
+  <%= link_to l(:button_bulk_export), 
+              bulk_export_workflow_viz_admin_index_path(format: :json),
+              class: 'btn btn-primary',
+              target: '_blank' %>
+</div>
+
+<h2><%= l(:label_workflow_visualization_admin) %></h2>
+
+<div class="workflow-admin-stats">
+  <h3><%= l(:label_workflow_statistics) %></h3>
+  <%= workflow_statistics_table(@statistics) %>
+</div>
+
+<div class="workflow-viz-controls">
+  <%= form_tag workflow_viz_admin_index_path, method: :get, local: true, class: 'form-inline' do %>
+    <div class="form-group">
+      <%= label_tag :tracker_id, l(:field_tracker), class: 'control-label' %>
+      <%= select_tag :tracker_id, 
+                     tracker_select_options(@trackers, @selected_tracker),
+                     { 
+                       class: 'form-control',
+                       onchange: 'this.form.submit();',
+                       include_blank: false
+                     } %>
+    </div>
+    
+    <div class="form-group ml-3">
+      <%= label_tag :view_mode, l(:label_view_mode), class: 'control-label' %>
+      <%= select_tag :view_mode,
+                     options_for_select([
+                       [l(:label_global_view), 'global'],
+                       [l(:label_detailed_view), 'detailed']
+                     ], params[:view_mode] || 'global'),
+                     { 
+                       class: 'form-control',
+                       id: 'view-mode-select'
+                     } %>
+    </div>
+  <% end %>
+</div>
+
+<% if @selected_tracker && @mermaid_diagram.present? %>
+  <div class="workflow-diagram-section">
+    <h3>
+      <%= l(:label_global_workflow_for, tracker: @selected_tracker.name) %>
+    </h3>
+    
+    <div class="diagram-controls">
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="zoom-in">
+        <i class="fa fa-search-plus"></i> <%= l(:button_zoom_in) %>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="zoom-out">
+        <i class="fa fa-search-minus"></i> <%= l(:button_zoom_out) %>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" id="reset-zoom">
+        <i class="fa fa-refresh"></i> <%= l(:button_reset_zoom) %>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-info" id="fullscreen-toggle">
+        <i class="fa fa-expand"></i> <%= l(:button_fullscreen) %>
+      </button>
+    </div>
+    
+    <%= mermaid_diagram_container('admin-workflow-diagram', @mermaid_diagram, 
+                                  class: 'workflow-diagram-admin',
+                                  style: 'min-height: 500px; border: 1px solid #ddd; border-radius: 4px;') %>
+  </div>
+
+  <div class="workflow-admin-details mt-4">
+    <div class="row">
+      <div class="col-md-4">
+        <h4><%= l(:label_statuses) %></h4>
+        <div class="admin-status-list">
+          <% @workflow_data[:statuses].each do |status| %>
+            <div class="admin-status-item">
+              <%= status_badge(status) %>
+              <div class="status-details">
+                <small class="text-muted">ID: <%= status[:id] %></small>
+                <% if status[:is_closed] %>
+                  <span class="badge badge-secondary"><%= l(:label_closed) %></span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="col-md-8">
+        <h4><%= l(:label_transitions_with_roles) %></h4>
+        <div class="admin-transitions-table">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr>
+                <th><%= l(:label_from_status) %></th>
+                <th><%= l(:label_to_status) %></th>
+                <th><%= l(:label_roles) %></th>
+                <th><%= l(:label_role_count) %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @workflow_data[:transitions].each do |transition| %>
+                <tr>
+                  <td><strong><%= transition[:from_name] %></strong></td>
+                  <td><strong><%= transition[:to_name] %></strong></td>
+                  <td>
+                    <% if transition[:roles] %>
+                      <% transition[:roles].each do |role| %>
+                        <span class="badge badge-info"><%= role %></span>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted"><%= transition[:role] %></span>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= transition_count_badge(transition[:role_count] || 1) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% elsif @selected_tracker %>
+  <div class="alert alert-info">
+    <%= l(:notice_no_workflow_defined, tracker: @selected_tracker.name) %>
+    <p>
+      <%= link_to l(:label_configure_workflow), 
+                  workflows_path(tracker_id: @selected_tracker.id),
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+<% else %>
+  <div class="alert alert-warning">
+    <%= l(:notice_no_trackers_available) %>
+    <p>
+      <%= link_to l(:label_create_tracker), 
+                  new_tracker_path,
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+<% end %>
+
+<div class="workflow-admin-tools mt-5">
+  <h3><%= l(:label_admin_tools) %></h3>
+  
+  <div class="admin-tool-buttons">
+    <%= link_to l(:button_tracker_overview), 
+                tracker_overview_workflow_viz_admin_index_path,
+                class: 'btn btn-outline-info',
+                remote: true,
+                id: 'tracker-overview-btn' %>
+    
+    <%= link_to l(:button_export_all_workflows), 
+                bulk_export_workflow_viz_admin_index_path(format: :json),
+                class: 'btn btn-outline-success',
+                target: '_blank' %>
+  </div>
+  
+  <div id="tracker-overview-container" class="mt-3" style="display: none;">
+    <!-- AJAX로 로드될 트래커 개요 -->
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Mermaid 초기화
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis'
+    },
+    securityLevel: 'loose'
+  });
+
+  // 줌 기능
+  let currentZoom = 1;
+  const diagramContainer = document.querySelector('.workflow-diagram-admin');
+  
+  if (diagramContainer) {
+    document.getElementById('zoom-in')?.addEventListener('click', function() {
+      currentZoom += 0.1;
+      diagramContainer.style.transform = `scale(${currentZoom})`;
+    });
+    
+    document.getElementById('zoom-out')?.addEventListener('click', function() {
+      currentZoom = Math.max(0.1, currentZoom - 0.1);
+      diagramContainer.style.transform = `scale(${currentZoom})`;
+    });
+    
+    document.getElementById('reset-zoom')?.addEventListener('click', function() {
+      currentZoom = 1;
+      diagramContainer.style.transform = 'scale(1)';
+    });
+    
+    document.getElementById('fullscreen-toggle')?.addEventListener('click', function() {
+      if (diagramContainer.requestFullscreen) {
+        diagramContainer.requestFullscreen();
+      }
+    });
+  }
+
+  // 트래커 개요 로드
+  document.getElementById('tracker-overview-btn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    const container = document.getElementById('tracker-overview-container');
+    const isVisible = container.style.display !== 'none';
+    
+    if (isVisible) {
+      container.style.display = 'none';
+      this.textContent = '<%= l(:button_tracker_overview) %>';
+    } else {
+      fetch('<%= tracker_overview_workflow_viz_admin_index_path %>')
+        .then(response => response.json())
+        .then(data => {
+          renderTrackerOverview(data);
+          container.style.display = 'block';
+          this.textContent = '<%= l(:button_hide_overview) %>';
+        })
+        .catch(error => {
+          console.error('Error loading tracker overview:', error);
+        });
+    }
+  });
+
+  function renderTrackerOverview(data) {
+    const container = document.getElementById('tracker-overview-container');
+    
+    let html = '<h4><%= l(:label_tracker_overview) %></h4>';
+    html += '<table class="table table-striped">';
+    html += '<thead><tr>';
+    html += '<th><%= l(:field_tracker) %></th>';
+    html += '<th><%= l(:label_transitions) %></th>';
+    html += '<th><%= l(:label_statuses) %></th>';
+    html += '<th><%= l(:label_roles) %></th>';
+    html += '</tr></thead><tbody>';
+    
+    data.forEach(function(item) {
+      html += '<tr>';
+      html += '<td><strong>' + item.tracker.name + '</strong></td>';
+      html += '<td><span class="badge badge-primary">' + item.transition_count + '</span></td>';
+      html += '<td><span class="badge badge-info">' + item.status_count + '</span></td>';
+      html += '<td><span class="badge badge-success">' + item.role_count + '</span></td>';
+      html += '</tr>';
+    });
+    
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+});
+</script>

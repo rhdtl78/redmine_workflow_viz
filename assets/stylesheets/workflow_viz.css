@@ -1,0 +1,389 @@
+/* Redmine Workflow Visualization Plugin Styles */
+
+/* 메인 컨테이너 */
+.workflow-viz-controls {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #dee2e6;
+}
+
+.workflow-viz-controls .form-group {
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.workflow-viz-controls label {
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+/* 다이어그램 컨테이너 */
+.mermaid-container {
+  position: relative;
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  overflow: auto;
+}
+
+.workflow-diagram-main,
+.workflow-diagram-admin {
+  transition: transform 0.3s ease;
+  transform-origin: top left;
+}
+
+.mermaid-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* 다이어그램 컨트롤 */
+.diagram-controls {
+  margin-bottom: 15px;
+  text-align: right;
+}
+
+.diagram-controls .btn {
+  margin-left: 5px;
+}
+
+/* 범례 */
+.workflow-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #dee2e6;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  border: 2px solid;
+}
+
+.legend-color.start {
+  background: #e1f5fe;
+  border-color: #01579b;
+}
+
+.legend-color.active {
+  background: #f3e5f5;
+  border-color: #4a148c;
+}
+
+.legend-color.closed {
+  background: #ffebee;
+  border-color: #b71c1c;
+}
+
+.legend-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 상태 배지 */
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.badge-start {
+  color: #01579b;
+  background-color: #e1f5fe;
+  border: 1px solid #01579b;
+}
+
+.badge-active {
+  color: #4a148c;
+  background-color: #f3e5f5;
+  border: 1px solid #4a148c;
+}
+
+.badge-closed {
+  color: #b71c1c;
+  background-color: #ffebee;
+  border: 1px solid #b71c1c;
+}
+
+.badge-primary {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.badge-secondary {
+  color: #fff;
+  background-color: #6c757d;
+}
+
+.badge-info {
+  color: #fff;
+  background-color: #17a2b8;
+}
+
+.badge-warning {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+.badge-danger {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.badge-success {
+  color: #fff;
+  background-color: #28a745;
+}
+
+/* 상태 및 전환 목록 */
+.status-list,
+.transitions-list {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 10px;
+  background: white;
+}
+
+.status-item,
+.transition-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #f8f9fa;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-item:last-child,
+.transition-item:last-child {
+  border-bottom: none;
+}
+
+.status-info {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* 관리자 페이지 스타일 */
+.workflow-admin-stats {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #dee2e6;
+}
+
+.admin-status-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 10px;
+  background: white;
+}
+
+.admin-status-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.admin-status-item:last-child {
+  border-bottom: none;
+}
+
+.status-details {
+  margin-top: 5px;
+}
+
+.admin-transitions-table {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+}
+
+.admin-transitions-table table {
+  margin-bottom: 0;
+}
+
+.admin-transitions-table th {
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* 내보내기 버튼 */
+.export-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.export-buttons .btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 관리자 도구 */
+.workflow-admin-tools {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #dee2e6;
+}
+
+.admin-tool-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .workflow-viz-controls {
+    padding: 10px;
+  }
+  
+  .workflow-viz-controls .form-group {
+    margin-right: 0;
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  
+  .workflow-legend {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .diagram-controls {
+    text-align: center;
+  }
+  
+  .diagram-controls .btn {
+    margin: 2px;
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  
+  .export-buttons {
+    flex-direction: column;
+  }
+  
+  .admin-tool-buttons {
+    flex-direction: column;
+  }
+}
+
+/* 다크 테마 지원 */
+@media (prefers-color-scheme: dark) {
+  .workflow-viz-controls,
+  .workflow-admin-stats,
+  .workflow-admin-tools {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .mermaid-container {
+    background: #1a202c;
+    border-color: #4a5568;
+  }
+  
+  .status-list,
+  .transitions-list,
+  .admin-status-list,
+  .admin-transitions-table {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .workflow-legend {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+}
+
+/* 인쇄 스타일 */
+@media print {
+  .workflow-viz-controls,
+  .diagram-controls,
+  .export-buttons,
+  .admin-tool-buttons {
+    display: none;
+  }
+  
+  .mermaid-container {
+    border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+  
+  .workflow-diagram-main,
+  .workflow-diagram-admin {
+    transform: none !important;
+  }
+}
+
+/* 애니메이션 */
+.status-item,
+.transition-item,
+.admin-status-item {
+  transition: background-color 0.2s ease;
+}
+
+.status-item:hover,
+.transition-item:hover,
+.admin-status-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* 로딩 애니메이션 */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fa-spinner.fa-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 전체화면 모드 */
+.mermaid-container:fullscreen {
+  background: white;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mermaid-container:fullscreen .mermaid {
+  max-width: 90vw;
+  max-height: 90vh;
+}

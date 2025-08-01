@@ -1,0 +1,131 @@
+<div class="workflow-viz-settings">
+  <h3><%= l(:label_workflow_viz_settings) %></h3>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_default_diagram_type', l(:label_default_diagram_type), class: 'control-label' %>
+    <%= select_tag 'settings[default_diagram_type]',
+                   options_for_select([
+                     [l(:label_flowchart), 'flowchart'],
+                     [l(:label_state_diagram), 'stateDiagram-v2']
+                   ], @settings['default_diagram_type']),
+                   { class: 'form-control', style: 'width: 200px;' } %>
+    <p class="form-text text-muted">
+      <%= l(:text_default_diagram_type_help) %>
+    </p>
+  </div>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_show_status_colors', class: 'control-label' do %>
+      <%= check_box_tag 'settings[show_status_colors]', 'true', 
+                        @settings['show_status_colors'] == 'true',
+                        { id: 'settings_show_status_colors' } %>
+      <%= l(:label_show_status_colors) %>
+    <% end %>
+    <p class="form-text text-muted">
+      <%= l(:text_show_status_colors_help) %>
+    </p>
+  </div>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_enable_export', class: 'control-label' do %>
+      <%= check_box_tag 'settings[enable_export]', 'true', 
+                        @settings['enable_export'] == 'true',
+                        { id: 'settings_enable_export' } %>
+      <%= l(:label_enable_export) %>
+    <% end %>
+    <p class="form-text text-muted">
+      <%= l(:text_enable_export_help) %>
+    </p>
+  </div>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_mermaid_theme', l(:label_mermaid_theme), class: 'control-label' %>
+    <%= select_tag 'settings[mermaid_theme]',
+                   options_for_select([
+                     [l(:label_theme_default), 'default'],
+                     [l(:label_theme_dark), 'dark'],
+                     [l(:label_theme_forest), 'forest'],
+                     [l(:label_theme_neutral), 'neutral']
+                   ], @settings['mermaid_theme']),
+                   { class: 'form-control', style: 'width: 200px;' } %>
+    <p class="form-text text-muted">
+      <%= l(:text_mermaid_theme_help) %>
+    </p>
+  </div>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_max_diagram_width', l(:label_max_diagram_width), class: 'control-label' %>
+    <%= number_field_tag 'settings[max_diagram_width]', 
+                         @settings['max_diagram_width'] || '1200',
+                         { class: 'form-control', style: 'width: 120px;', min: 600, max: 2000, step: 100 } %>
+    <span class="form-text">px</span>
+    <p class="form-text text-muted">
+      <%= l(:text_max_diagram_width_help) %>
+    </p>
+  </div>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_cache_diagrams', class: 'control-label' do %>
+      <%= check_box_tag 'settings[cache_diagrams]', 'true', 
+                        @settings['cache_diagrams'] == 'true',
+                        { id: 'settings_cache_diagrams' } %>
+      <%= l(:label_cache_diagrams) %>
+    <% end %>
+    <p class="form-text text-muted">
+      <%= l(:text_cache_diagrams_help) %>
+    </p>
+  </div>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_show_role_labels', class: 'control-label' do %>
+      <%= check_box_tag 'settings[show_role_labels]', 'true', 
+                        @settings['show_role_labels'] == 'true',
+                        { id: 'settings_show_role_labels' } %>
+      <%= l(:label_show_role_labels) %>
+    <% end %>
+    <p class="form-text text-muted">
+      <%= l(:text_show_role_labels_help) %>
+    </p>
+  </div>
+  
+  <div class="form-group">
+    <%= label_tag 'settings_enable_fullscreen', class: 'control-label' do %>
+      <%= check_box_tag 'settings[enable_fullscreen]', 'true', 
+                        @settings['enable_fullscreen'] == 'true',
+                        { id: 'settings_enable_fullscreen' } %>
+      <%= l(:label_enable_fullscreen) %>
+    <% end %>
+    <p class="form-text text-muted">
+      <%= l(:text_enable_fullscreen_help) %>
+    </p>
+  </div>
+</div>
+
+<style>
+.workflow-viz-settings {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #dee2e6;
+}
+
+.workflow-viz-settings .form-group {
+  margin-bottom: 20px;
+}
+
+.workflow-viz-settings .control-label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.workflow-viz-settings .form-text {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 5px;
+}
+
+.workflow-viz-settings input[type="checkbox"] {
+  margin-right: 8px;
+}
+</style>
