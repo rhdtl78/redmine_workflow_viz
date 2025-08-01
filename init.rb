@@ -8,7 +8,7 @@ Redmine::Plugin.register :redmine_workflow_viz do
   name 'Redmine Workflow Viz plugin'
   author 'R.SUETSUGU'
   description 'Modern workflow visualization using Mermaid.js diagrams'
-  version '2.0.3'
+  version '2.0.5'
   url 'http://github.com/suer/redmine_workflow_viz'
   author_url 'http://d.hatena.ne.jp/suer'
   
@@ -25,18 +25,35 @@ end
 puts "=== WORKFLOW VIZ PLUGIN REGISTERED ==="
 Rails.logger.info "=== WORKFLOW VIZ PLUGIN REGISTERED ===" if defined?(Rails.logger)
 
-# 간단한 훅 테스트
-class SimpleTestHook < Redmine::Hook::ViewListener
-  def view_layouts_base_body_bottom(context = {})
-    puts "=== SIMPLE TEST HOOK CALLED ==="
-    Rails.logger.info "=== SIMPLE TEST HOOK CALLED ===" if defined?(Rails.logger)
-    
-    <<-HTML.html_safe
-    <div style="position: fixed; bottom: 10px; right: 10px; background: red; color: white; padding: 10px; z-index: 9999;">
-      WORKFLOW VIZ PLUGIN LOADED!
-    </div>
-    HTML
+# 훅 파일들 로드
+hook_files = ['simple_hook', 'comprehensive_hook']
+
+hook_files.each do |hook_file|
+  begin
+    require File.join(File.dirname(__FILE__), 'lib', hook_file)
+    puts "=== #{hook_file} loaded successfully ==="
+    Rails.logger.info "=== #{hook_file} loaded successfully ===" if defined?(Rails.logger)
+  rescue => e
+    puts "=== Failed to load #{hook_file}: #{e.message} ==="
+    Rails.logger.error "=== Failed to load #{hook_file}: #{e.message} ===" if defined?(Rails.logger)
+    puts e.backtrace.first(5).join("\n")
   end
+end
+
+# 훅이 등록되었는지 확인
+if defined?(Redmine::Hook)
+  puts "=== Redmine::Hook is available ==="
+  Rails.logger.info "=== Redmine::Hook is available ===" if defined?(Rails.logger)
+  
+  # 등록된 훅 리스너들 확인
+  if Redmine::Hook.respond_to?(:hook_listeners)
+    listeners = Redmine::Hook.hook_listeners
+    puts "=== Registered hook listeners: #{listeners.keys.join(', ')} ==="
+    Rails.logger.info "=== Registered hook listeners: #{listeners.keys.join(', ')} ===" if defined?(Rails.logger)
+  end
+else
+  puts "=== Redmine::Hook is NOT available ==="
+  Rails.logger.error "=== Redmine::Hook is NOT available ===" if defined?(Rails.logger)
 end
 
 puts "=== WORKFLOW VIZ PLUGIN INIT.RB COMPLETE ==="
