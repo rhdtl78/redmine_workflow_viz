@@ -26,32 +26,22 @@ class WorkflowVizHooks < Redmine::Hook::ViewListener
       
       return '' unless role && tracker
       
-      # 시각화 HTML 직접 생성
+      # 플러그인 전용 헬퍼 사용
       helper = Object.new
-      helper.extend(WorkflowsHelper)
+      helper.extend(WorkflowVizHelper)
       
-      graph_url = helper.generate_graph(role, tracker)
+      # Mermaid.js 그래프 생성
+      visualization_html = helper.generate_workflow_mermaid_graph(role, tracker)
       
-      if graph_url.present?
-        <<-HTML.html_safe
-        <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9;">
-          <h3>Workflow Visualization</h3>
-          <div id="workflow-graph" style="text-align: center; padding: 10px;">
-            <img src="#{ERB::Util.html_escape(graph_url)}" alt="Workflow Graph" class="workflow-graph" style="max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 4px;" />
-          </div>
-          <p style="font-size: 12px; color: #666; text-align: center; margin-top: 10px;">
-            Workflow visualization for role: #{ERB::Util.html_escape(role.name)} and tracker: #{ERB::Util.html_escape(tracker.name)}
-          </p>
-        </div>
-        HTML
-      else
-        <<-HTML.html_safe
-        <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9;">
-          <h3>Workflow Visualization</h3>
-          <p class="info">No workflow transitions defined for role "#{ERB::Util.html_escape(role.name)}" and tracker "#{ERB::Util.html_escape(tracker.name)}".</p>
-        </div>
-        HTML
-      end
+      return visualization_html if visualization_html.present?
+      
+      # 워크플로우가 없는 경우 메시지 표시
+      <<-HTML.html_safe
+      <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background-color: #f9f9f9;">
+        <h3>Workflow Visualization</h3>
+        <p class="info">No workflow transitions defined for role "#{ERB::Util.html_escape(role.name)}" and tracker "#{ERB::Util.html_escape(tracker.name)}".</p>
+      </div>
+      HTML
     rescue => e
       Rails.logger.error "Workflow visualization hook error: #{e.message}"
       Rails.logger.error e.backtrace.join("\n") if e.backtrace

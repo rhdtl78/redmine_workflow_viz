@@ -1,13 +1,24 @@
 <div class="box tabular settings">
   <p>
-    <label for="settings_chart_width">Chart Width:</label>
-    <%= text_field_tag 'settings[chart_width]', @settings['chart_width'], :size => 6 %>
-    <em class="info">Width of the workflow visualization chart in pixels (default: 500)</em>
+    <label for="settings_theme">Diagram Theme:</label>
+    <%= select_tag 'settings[theme]', options_for_select([
+      ['Default', 'default'],
+      ['Dark', 'dark'],
+      ['Forest', 'forest'],
+      ['Neutral', 'neutral']
+    ], @settings['theme']), :size => 1 %>
+    <em class="info">Visual theme for the workflow diagrams (default: default)</em>
   </p>
   
   <p>
-    <label for="settings_chart_height">Chart Height:</label>
-    <%= text_field_tag 'settings[chart_height]', @settings['chart_height'], :size => 6 %>
-    <em class="info">Height of the workflow visualization chart in pixels (default: 500)</em>
+    <label for="settings_show_labels">Show Status Labels:</label>
+    <%= check_box_tag 'settings[show_labels]', '1', @settings['show_labels'] != '0' %>
+    <em class="info">Display status names on diagram nodes</em>
+  </p>
+  
+  <p>
+    <label for="settings_enable_animation">Enable Animation:</label>
+    <%= check_box_tag 'settings[enable_animation]', '1', @settings['enable_animation'] != '0' %>
+    <em class="info">Enable smooth transitions and animations in diagrams</em>
   </p>
 </div>

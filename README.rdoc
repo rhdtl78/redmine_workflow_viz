@@ -1,17 +1,21 @@
 = Redmine Workflow Visualization Plugin
 
-This is a Redmine plugin to visualize workflow definitions using graphical charts.
+This is a modern Redmine plugin that visualizes workflow definitions using interactive Mermaid.js diagrams.
 
 == Compatibility
 
 * Redmine 6.0.0 or higher
 * Ruby 3.3+ 
 * Rails 7.2+
+* Modern web browsers with JavaScript support
 
 == Features
 
-* Visual representation of workflow transitions
-* Configurable chart dimensions
+* Interactive workflow visualization using Mermaid.js
+* Multiple diagram themes (Default, Dark, Forest, Neutral)
+* Responsive design that works on all screen sizes
+* No external API dependencies - works offline
+* Real-time diagram generation
 * Integration with Redmine's workflow management interface
 * Support for role-based and tracker-based workflow visualization
 
@@ -34,14 +38,31 @@ This is a Redmine plugin to visualize workflow definitions using graphical chart
 
 1. Go to Administration > Workflow
 2. Select a role and tracker
-3. The workflow visualization will appear at the bottom of the page
-4. Configure chart dimensions in the plugin settings
+3. Click "Edit" to view the workflow configuration
+4. The workflow visualization will appear at the bottom of the page
+5. Configure diagram appearance in the plugin settings
 
 == Configuration
 
 The plugin provides the following configuration options:
-* Chart Width: Width of the visualization chart in pixels (default: 500)
-* Chart Height: Height of the visualization chart in pixels (default: 500)
+* Diagram Theme: Choose from Default, Dark, Forest, or Neutral themes
+* Show Status Labels: Toggle display of status names on diagram nodes
+* Enable Animation: Enable smooth transitions and animations
+
+== Technical Details
+
+* Uses Mermaid.js for diagram rendering (loaded from CDN)
+* Generates flowchart diagrams showing status transitions
+* Integrates via Redmine view hooks without modifying core functionality
+* Separate helper namespace to avoid conflicts with core Redmine helpers
+
+== Upgrade from v1.x
+
+This version (2.0.0) is a complete rewrite that:
+* Replaces deprecated Google Charts API with modern Mermaid.js
+* Fixes compatibility issues with Redmine 6
+* Provides better visual appearance and interactivity
+* Removes external API dependencies
 
 == License
 
@@ -50,5 +71,5 @@ This plugin follows the same license as Redmine.
 == Author
 
 Original Author: R.SUETSUGU
-Updated for Redmine 6 compatibility
+Updated for Redmine 6 compatibility and modern visualization
 

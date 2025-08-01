@@ -7,8 +7,8 @@ require File.join(plugin_root, 'lib', 'workflow_viz_hooks')
 Redmine::Plugin.register :redmine_workflow_viz do
   name 'Redmine Workflow Viz plugin'
   author 'R.SUETSUGU'
-  description 'Visualization of workflow definition'
-  version '1.0.4'
+  description 'Modern workflow visualization using Mermaid.js diagrams'
+  version '2.0.0'
   url 'http://github.com/suer/redmine_workflow_viz'
   author_url 'http://d.hatena.ne.jp/suer'
   
@@ -16,7 +16,8 @@ Redmine::Plugin.register :redmine_workflow_viz do
   
   # 플러그인 설정
   settings :default => {
-    'chart_width' => '500',
-    'chart_height' => '500'
+    'theme' => 'default',
+    'show_labels' => '1',
+    'enable_animation' => '1'
   }, :partial => 'settings/workflow_viz_settings'
 end
