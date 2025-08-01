@@ -3,7 +3,7 @@
 
 <p><%=l(:text_workflow_edit)%>:</p>
 
-<% form_tag({}, :method => 'get') do %>
+<%= form_tag({}, :method => 'get', :local => true) do %>
 <p>
 	<label><%=l(:label_role)%>:</label>
 	<%= select_tag 'role_id', options_from_collection_for_select(@roles, "id", "name", @role && @role.id) %>
@@ -21,21 +21,21 @@
 
 
 <% if @tracker && @role && @statuses.any? %>
-<% form_tag({}, :id => 'workflow_form' ) do %>
+<%= form_tag({}, :id => 'workflow_form', :local => true ) do %>
 <%= hidden_field_tag 'tracker_id', @tracker.id %>
 <%= hidden_field_tag 'role_id', @role.id %>
 <div class="autoscroll">
 <table class="list">
 <thead>
 	<tr>
-		<th align="left"><%=l(:label_current_status)%></th>
-		<th align="center" colspan="<%= @statuses.length %>"><%=l(:label_new_statuses_allowed)%></th>
+		<th class="text-left"><%=l(:label_current_status)%></th>
+		<th class="text-center" colspan="<%= @statuses.length %>"><%=l(:label_new_statuses_allowed)%></th>
 	</tr>
 	<tr>
 		<td></td>
-		<% for new_status in @statuses %>
-		<td width="<%= 75 / @statuses.size %>%" align="center">
-			<%= link_to_function(image_tag('toggle_check.png'), "toggleCheckboxesBySelector('input.new-status-#{new_status.id}')",
+		<% @statuses.each do |new_status| %>
+		<td width="<%= 75 / @statuses.size %>%" class="text-center">
+			<%= link_to_function(icon_tag('toggle_check'), "toggleCheckboxesBySelector('input.new-status-#{new_status.id}')",
 	                                              			:title => "#{l(:button_check_all)}/#{l(:button_uncheck_all)}") %>
 			<%= new_status.name %>
 		</td>
@@ -43,17 +43,17 @@
 	</tr>
 </thead>
 <tbody>
-	<% for old_status in @statuses %>
+	<% @statuses.each_with_index do |old_status, index| %>
 	<tr class="<%= cycle("odd", "even") %>">
 		<td>
-			<%= link_to_function(image_tag('toggle_check.png'), "toggleCheckboxesBySelector('input.old-status-#{old_status.id}')",
+			<%= link_to_function(icon_tag('toggle_check'), "toggleCheckboxesBySelector('input.old-status-#{old_status.id}')",
 			                                              			:title => "#{l(:button_check_all)}/#{l(:button_uncheck_all)}") %>
 			
 			<%= old_status.name %>
 		</td>
 		<% new_status_ids_allowed = old_status.find_new_statuses_allowed_to([@role], @tracker).collect(&:id) -%>
-		<% for new_status in @statuses -%>
-		<td align="center">
+		<% @statuses.each do |new_status| -%>
+		<td class="text-center">
 			<%= check_box_tag "issue_status[#{ old_status.id }][]", new_status.id, new_status_ids_allowed.include?(new_status.id),
 						:class => "old-status-#{old_status.id} new-status-#{new_status.id}" %>			
 		</td>
@@ -70,4 +70,12 @@
 <% end %>
 
 <% html_title(l(:label_workflow)) -%>
-<%= image_tag(generate_graph(@role, @tracker)) if @role %>
+
+<% if @role && @tracker %>
+<div class="workflow-visualization">
+  <h3>Workflow Visualization</h3>
+  <div id="workflow-graph">
+    <%= image_tag(generate_graph(@role, @tracker), :alt => "Workflow Graph", :class => "workflow-graph") %>
+  </div>
+</div>
+<% end %>

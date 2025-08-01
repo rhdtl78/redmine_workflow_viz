@@ -1,0 +1,47 @@
+.workflow-visualization {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.workflow-visualization h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#workflow-graph {
+  text-align: center;
+  padding: 10px;
+}
+
+.workflow-graph {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Redmine 6 호환성을 위한 스타일 조정 */
+.workflow_form table.list {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.workflow_form table.list th,
+.workflow_form table.list td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.workflow_form .text-left {
+  text-align: left;
+}
+
+.workflow_form .text-center {
+  text-align: center;
+}

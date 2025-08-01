@@ -1,7 +1,54 @@
-= workflow_viz
-is a redmine plugin to visualize workflow.
+= Redmine Workflow Visualization Plugin
 
-= Installation
-1. $ cd REDMINE_ROOT
-2. $ ruby script/plugin install git://github.com/suer/redmine_workflow_viz.git
+This is a Redmine plugin to visualize workflow definitions using graphical charts.
+
+== Compatibility
+
+* Redmine 6.0.0 or higher
+* Ruby 3.3+ 
+* Rails 7.2+
+
+== Features
+
+* Visual representation of workflow transitions
+* Configurable chart dimensions
+* Integration with Redmine's workflow management interface
+* Support for role-based and tracker-based workflow visualization
+
+== Installation
+
+1. Navigate to your Redmine root directory:
+   $ cd REDMINE_ROOT
+
+2. Clone the plugin into the plugins directory:
+   $ git clone https://github.com/suer/redmine_workflow_viz.git plugins/redmine_workflow_viz
+
+3. Install dependencies (if any):
+   $ bundle install
+
+4. Restart your Redmine application
+
+5. Configure the plugin in Administration > Plugins > Redmine Workflow Viz plugin
+
+== Usage
+
+1. Go to Administration > Workflow
+2. Select a role and tracker
+3. The workflow visualization will appear at the bottom of the page
+4. Configure chart dimensions in the plugin settings
+
+== Configuration
+
+The plugin provides the following configuration options:
+* Chart Width: Width of the visualization chart in pixels (default: 500)
+* Chart Height: Height of the visualization chart in pixels (default: 500)
+
+== License
+
+This plugin follows the same license as Redmine.
+
+== Author
+
+Original Author: R.SUETSUGU
+Updated for Redmine 6 compatibility
 

@@ -1,3 +1,9 @@
-# English strings go here for Rails i18n
 en:
-  my_label: "My label"
+  workflow_viz:
+    chart_width: "Chart Width"
+    chart_height: "Chart Height"
+    visualization_title: "Workflow Visualization"
+    no_workflow_data: "No workflow data available for the selected role and tracker"
+    settings:
+      chart_width_help: "Width of the workflow visualization chart in pixels (default: 500)"
+      chart_height_help: "Height of the workflow visualization chart in pixels (default: 500)"

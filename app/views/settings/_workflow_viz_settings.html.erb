@@ -1,0 +1,13 @@
+<div class="box tabular settings">
+  <p>
+    <label for="settings_chart_width">Chart Width:</label>
+    <%= text_field_tag 'settings[chart_width]', @settings['chart_width'], :size => 6 %>
+    <em class="info">Width of the workflow visualization chart in pixels (default: 500)</em>
+  </p>
+  
+  <p>
+    <label for="settings_chart_height">Chart Height:</label>
+    <%= text_field_tag 'settings[chart_height]', @settings['chart_height'], :size => 6 %>
+    <em class="info">Height of the workflow visualization chart in pixels (default: 500)</em>
+  </p>
+</div>
