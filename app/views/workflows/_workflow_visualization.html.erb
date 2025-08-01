@@ -1,0 +1,24 @@
+<% if @workflow_viz_role && @workflow_viz_tracker %>
+  <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 2px solid #28a745; border-radius: 4px; background-color: #e6ffe6;">
+    <h3>🎯 Workflow Visualization (View Override)</h3>
+    
+    <% 
+      helper = Object.new
+      helper.extend(WorkflowVizHelper)
+      visualization_html = helper.generate_workflow_mermaid_graph(@workflow_viz_role, @workflow_viz_tracker)
+    %>
+    
+    <% if visualization_html.present? %>
+      <%= visualization_html.html_safe %>
+    <% else %>
+      <p class="info">No workflow transitions defined for role "<%= @workflow_viz_role.name %>" and tracker "<%= @workflow_viz_tracker.name %>".</p>
+    <% end %>
+  </div>
+<% elsif params[:role_id].present? || params[:tracker_id].present? %>
+  <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 2px solid #ffc107; border-radius: 4px; background-color: #fff3cd;">
+    <h3>⚠️ Workflow Visualization (Debug)</h3>
+    <p>View override is working!</p>
+    <p>Params: role_id=<%= params[:role_id].inspect %>, tracker_id=<%= params[:tracker_id].inspect %></p>
+    <p>Instance vars: @workflow_viz_role=<%= @workflow_viz_role.inspect %>, @workflow_viz_tracker=<%= @workflow_viz_tracker.inspect %></p>
+  </div>
+<% end %>
