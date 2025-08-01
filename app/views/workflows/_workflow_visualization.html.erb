@@ -1,6 +1,10 @@
+<!-- 컨트롤러 패치에서 설정한 디버그 HTML 표시 -->
+<%= @workflow_viz_debug.html_safe if @workflow_viz_debug %>
+
+<!-- 기존 시각화 로직 -->
 <% if @workflow_viz_role && @workflow_viz_tracker %>
-  <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 2px solid #28a745; border-radius: 4px; background-color: #e6ffe6;">
-    <h3>🎯 Workflow Visualization (View Override)</h3>
+  <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 2px solid #6f42c1; border-radius: 4px; background-color: #f3e5ff;">
+    <h3>🎯 Workflow Visualization (View Partial)</h3>
     
     <% 
       helper = Object.new
@@ -15,10 +19,22 @@
     <% end %>
   </div>
 <% elsif params[:role_id].present? || params[:tracker_id].present? %>
-  <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 2px solid #ffc107; border-radius: 4px; background-color: #fff3cd;">
-    <h3>⚠️ Workflow Visualization (Debug)</h3>
-    <p>View override is working!</p>
+  <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 2px solid #fd7e14; border-radius: 4px; background-color: #fff3cd;">
+    <h3>⚠️ Workflow Visualization (Debug - View Partial)</h3>
+    <p>View partial is working!</p>
     <p>Params: role_id=<%= params[:role_id].inspect %>, tracker_id=<%= params[:tracker_id].inspect %></p>
     <p>Instance vars: @workflow_viz_role=<%= @workflow_viz_role.inspect %>, @workflow_viz_tracker=<%= @workflow_viz_tracker.inspect %></p>
+    <p>Time: <%= Time.current %></p>
+  </div>
+<% else %>
+  <div class="workflow-visualization" style="margin-top: 20px; padding: 15px; border: 2px solid #6c757d; border-radius: 4px; background-color: #f8f9fa;">
+    <h3>ℹ️ Workflow Visualization (View Partial - No Params)</h3>
+    <p>View partial loaded but no parameters found.</p>
+    <p>Available instance variables:</p>
+    <ul>
+      <% instance_variables.select { |v| v.to_s.include?('workflow') }.each do |var| %>
+        <li><%= var %>: <%= instance_variable_get(var).inspect %></li>
+      <% end %>
+    </ul>
   </div>
 <% end %>
