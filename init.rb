@@ -4,7 +4,7 @@ Redmine::Plugin.register :redmine_workflow_viz do
   name 'Redmine Workflow Viz plugin'
   author 'R.SUETSUGU'
   description 'Visualization of workflow definition'
-  version '1.0.0'
+  version '1.0.1'
   url 'http://github.com/suer/redmine_workflow_viz'
   author_url 'http://d.hatena.ne.jp/suer'
   
@@ -15,4 +15,9 @@ Redmine::Plugin.register :redmine_workflow_viz do
     'chart_width' => '500',
     'chart_height' => '500'
   }, :partial => 'settings/workflow_viz_settings'
+end
+
+# 컨트롤러 패치 로드
+Rails.application.config.to_prepare do
+  require_dependency File.expand_path('../lib/workflows_controller_patch', __FILE__)
 end
