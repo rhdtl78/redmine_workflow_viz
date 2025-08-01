@@ -1,12 +1,4 @@
-module WorkflowsControllerPatch
-  def edit
-    super
-    # 시각화를 위한 로깅 (선택사항)
-    Rails.logger.debug "Workflow Viz: Loaded workflow edit page"
-  end
-end
+# 컨트롤러 패치는 제거 - 뷰 훅만 사용하여 기존 기능에 간섭하지 않음
+# 이 파일은 호환성을 위해 유지하지만 실제 패치는 적용하지 않음
 
-# 컨트롤러에 패치 적용
-Rails.application.config.to_prepare do
-  WorkflowsController.prepend(WorkflowsControllerPatch) unless WorkflowsController.ancestors.include?(WorkflowsControllerPatch)
-end
+Rails.logger.info "Workflow Viz: Plugin loaded without controller patches"
