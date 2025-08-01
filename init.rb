@@ -8,7 +8,7 @@ Redmine::Plugin.register :redmine_workflow_viz do
   name 'Redmine Workflow Viz plugin'
   author 'R.SUETSUGU'
   description 'Modern workflow visualization using Mermaid.js diagrams'
-  version '2.0.7'
+  version '2.1.0'
   url 'http://github.com/suer/redmine_workflow_viz'
   author_url 'http://d.hatena.ne.jp/suer'
   
@@ -26,7 +26,7 @@ puts "=== WORKFLOW VIZ PLUGIN REGISTERED ==="
 Rails.logger.info "=== WORKFLOW VIZ PLUGIN REGISTERED ===" if defined?(Rails.logger)
 
 # 훅 파일들 로드
-hook_files = ['simple_hook', 'comprehensive_hook']
+hook_files = ['simple_hook', 'comprehensive_hook', 'workflow_visualization_hook']
 
 hook_files.each do |hook_file|
   begin
