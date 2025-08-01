@@ -3,15 +3,19 @@ module WorkflowsHelper
     return "" unless role && tracker
     
     begin
-      # 워크플로우 데이터 가져오기
-      workflows = role.workflows.where(tracker_id: tracker.id)
+      # WorkflowTransition 모델을 직접 사용하여 워크플로우 데이터 가져오기
+      workflows = WorkflowTransition.where(role_id: role.id, tracker_id: tracker.id)
       return "" if workflows.empty?
       
       edges = workflows.map do |workflow|
-        old_status_name = sanitize_status_name(workflow.old_status)
-        new_status_name = sanitize_status_name(workflow.new_status)
+        old_status = workflow.old_status
+        new_status = workflow.new_status
+        next unless old_status && new_status
+        
+        old_status_name = sanitize_status_name(old_status)
+        new_status_name = sanitize_status_name(new_status)
         "#{old_status_name}->#{new_status_name}"
-      end.join(";")
+      end.compact.join(";")
       
       return "" if edges.blank?
       
@@ -31,6 +35,7 @@ module WorkflowsHelper
       "#{chart_url}?#{params.to_query}"
     rescue => e
       Rails.logger.error "Workflow visualization error: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
       ""
     end
   end

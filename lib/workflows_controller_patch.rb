@@ -1,48 +1,18 @@
 module WorkflowsControllerPatch
   def self.included(base)
     base.class_eval do
-      # 기존 edit 메서드를 prepend로 확장
-      prepend InstanceMethods
-    end
-  end
-
-  module InstanceMethods
-    def edit
-      # 기존 edit 로직 실행
-      super
+      # 기존 edit 메서드에 시각화 지원만 추가
+      alias_method :edit_without_viz, :edit
       
-      # 워크플로우 시각화를 위한 추가 로직
-      ensure_workflow_variables
-    end
-    
-    private
-    
-    def ensure_workflow_variables
-      # roles와 trackers가 없으면 기본값 설정
-      @roles ||= Role.givable.sorted
-      @trackers ||= Tracker.sorted
-      
-      # 파라미터에서 role과 tracker 설정
-      if params[:role_id].present? && @role.nil?
-        @role = Role.find_by(id: params[:role_id])
+      def edit
+        # 기존 edit 로직 실행
+        edit_without_viz
+        
+        # 시각화를 위한 최소한의 변수 확인
+        # 기존 Redmine 로직이 이미 @roles, @trackers, @statuses를 설정했을 것임
+        Rails.logger.info "Workflow Viz: @roles=#{@roles&.count}, @trackers=#{@trackers&.count}, @statuses=#{@statuses&.count}"
+        Rails.logger.info "Workflow Viz: @role=#{@role&.name}, @tracker=#{@tracker&.name}"
       end
-      
-      if params[:tracker_id].present? && @tracker.nil?
-        @tracker = Tracker.find_by(id: params[:tracker_id])
-      end
-      
-      # 상태 정보 설정
-      if @statuses.nil? && @tracker
-        if params[:used_statuses_only] == '1'
-          @statuses = @tracker.issue_statuses.where(id: WorkflowTransition.where(tracker_id: @tracker.id).select(:old_status_id).distinct)
-        else
-          @statuses = @tracker.issue_statuses
-        end
-      end
-      
-      # 기본값 설정
-      @statuses ||= []
-      @used_statuses_only = params[:used_statuses_only] == '1'
     end
   end
 end
