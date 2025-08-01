@@ -8,7 +8,7 @@ Redmine::Plugin.register :redmine_workflow_viz do
   name 'Redmine Workflow Viz plugin'
   author 'R.SUETSUGU'
   description 'Modern workflow visualization using Mermaid.js diagrams'
-  version '2.0.5'
+  version '2.0.7'
   url 'http://github.com/suer/redmine_workflow_viz'
   author_url 'http://d.hatena.ne.jp/suer'
   
@@ -36,21 +36,13 @@ hook_files.each do |hook_file|
   rescue => e
     puts "=== Failed to load #{hook_file}: #{e.message} ==="
     Rails.logger.error "=== Failed to load #{hook_file}: #{e.message} ===" if defined?(Rails.logger)
-    puts e.backtrace.first(5).join("\n")
   end
 end
 
-# 훅이 등록되었는지 확인
+# 간단한 훅 등록 확인만
 if defined?(Redmine::Hook)
   puts "=== Redmine::Hook is available ==="
   Rails.logger.info "=== Redmine::Hook is available ===" if defined?(Rails.logger)
-  
-  # 등록된 훅 리스너들 확인
-  if Redmine::Hook.respond_to?(:hook_listeners)
-    listeners = Redmine::Hook.hook_listeners
-    puts "=== Registered hook listeners: #{listeners.keys.join(', ')} ==="
-    Rails.logger.info "=== Registered hook listeners: #{listeners.keys.join(', ')} ===" if defined?(Rails.logger)
-  end
 else
   puts "=== Redmine::Hook is NOT available ==="
   Rails.logger.error "=== Redmine::Hook is NOT available ===" if defined?(Rails.logger)
