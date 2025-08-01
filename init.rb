@@ -1,29 +1,14 @@
 require 'redmine'
 
-Rails.logger.info "=== WORKFLOW VIZ PLUGIN LOADING ==="
-
-# 플러그인 파일들 로드
-plugin_root = File.dirname(__FILE__)
-
-begin
-  require File.join(plugin_root, 'lib', 'workflow_viz_hooks')
-  Rails.logger.info "✓ workflow_viz_hooks.rb loaded successfully"
-rescue => e
-  Rails.logger.error "✗ Failed to load workflow_viz_hooks.rb: #{e.message}"
-end
-
-begin
-  require File.join(plugin_root, 'lib', 'workflows_controller_patch')
-  Rails.logger.info "✓ workflows_controller_patch.rb loaded successfully"
-rescue => e
-  Rails.logger.error "✗ Failed to load workflows_controller_patch.rb: #{e.message}"
-end
+# 플러그인 로드 확인을 위한 로그
+puts "=== WORKFLOW VIZ PLUGIN INIT.RB LOADING ==="
+Rails.logger.info "=== WORKFLOW VIZ PLUGIN INIT.RB LOADING ===" if defined?(Rails.logger)
 
 Redmine::Plugin.register :redmine_workflow_viz do
   name 'Redmine Workflow Viz plugin'
   author 'R.SUETSUGU'
   description 'Modern workflow visualization using Mermaid.js diagrams'
-  version '2.0.2'
+  version '2.0.3'
   url 'http://github.com/suer/redmine_workflow_viz'
   author_url 'http://d.hatena.ne.jp/suer'
   
@@ -37,4 +22,22 @@ Redmine::Plugin.register :redmine_workflow_viz do
   }, :partial => 'settings/workflow_viz_settings'
 end
 
-Rails.logger.info "=== WORKFLOW VIZ PLUGIN REGISTERED ==="
+puts "=== WORKFLOW VIZ PLUGIN REGISTERED ==="
+Rails.logger.info "=== WORKFLOW VIZ PLUGIN REGISTERED ===" if defined?(Rails.logger)
+
+# 간단한 훅 테스트
+class SimpleTestHook < Redmine::Hook::ViewListener
+  def view_layouts_base_body_bottom(context = {})
+    puts "=== SIMPLE TEST HOOK CALLED ==="
+    Rails.logger.info "=== SIMPLE TEST HOOK CALLED ===" if defined?(Rails.logger)
+    
+    <<-HTML.html_safe
+    <div style="position: fixed; bottom: 10px; right: 10px; background: red; color: white; padding: 10px; z-index: 9999;">
+      WORKFLOW VIZ PLUGIN LOADED!
+    </div>
+    HTML
+  end
+end
+
+puts "=== WORKFLOW VIZ PLUGIN INIT.RB COMPLETE ==="
+Rails.logger.info "=== WORKFLOW VIZ PLUGIN INIT.RB COMPLETE ===" if defined?(Rails.logger)
